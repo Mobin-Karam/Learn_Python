@@ -1,8 +1,8 @@
 from itertools import repeat
 from typing import Any
 
-alphabet: list[str | Any] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
-                             's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
+            's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 print(len(alphabet))
 print('Welcome to Caeser Cipher')
 input_value = input('Type \'encode\' to encrypt, type \'decode\' to decrypt:\n >>>  ')
@@ -18,15 +18,16 @@ def caeser_encrypt(msg, alph, shift_num):
     :param shift_num:
     """
     msg_characters = list(msg)
-    final_msg = ''
+
     for i in range(26):
         for j in range(len(msg_characters)):
             if alph[i] == msg_characters[j]:
                 s_num = shift_num % len(msg_characters)
-                final_msg += msg_characters[j - s_num]
+                msg_characters[j] = alph[i - s_num]
     # encrypt Message
 
-    return final_msg
+    msg = ''.join(msg_characters)
+    return msg
 
 
 def caeser_decrypt(msg, alph, shift_num):
@@ -37,14 +38,16 @@ import param
     :param shift_num:
     """
     msg_characters = list(msg)
-    final_msg = ''
+
     for i in range(26):
         for j in range(len(msg_characters)):
             if alph[i] == msg_characters[j]:
                 s_num = shift_num % len(msg_characters)
-                final_msg += msg_characters[j - s_num]
-    # Decrypt Message
-    return final_msg
+                msg_characters[j] = alph[i + s_num]
+    # encrypt Message
+
+    msg = ''.join(msg_characters)
+    return msg
 
 
 while True:
@@ -60,19 +63,19 @@ while True:
             if message.strip() != '':
                 break
     elif shift_number == 0:
-        while True:
-            try:
-                shift_number = int(input('Type the shift number:\n >>> '))
-                if shift_number < 0 or shift_number > 26:
-                    print('Try Again.')
-                    continue
-                break
-            except ValueError:
-                print('Invalid input. Please try again.')
+        try:
+            shift_number = int(input('Type the shift number:\n >>> '))
+            if shift_number < 0 or shift_number > 26:
+                print('Try Again.')
+                continue
+        except ValueError:
+            print('Invalid input. Please try again.')
     elif input_value.strip() == 'encode':
-        caeser_encrypt(input_value, alphabet, shift_number)
+        print(f'>>> Your encode message is : {caeser_encrypt(message, alphabet, shift_number)}')
+        break
     elif input_value.strip() == 'decode':
-        caeser_decrypt(input_value, alphabet, shift_number)
+        print(f'>>> Your decode message is : {caeser_decrypt(message, alphabet, shift_number)}')
+        break
     elif caeser_encrypt(message, alphabet, shift_number).strip() == '' or caeser_decrypt(message, alphabet,
                                                                                          shift_number).strip() == '':
         print(caeser_encrypt(message, alphabet, shift_number), caeser_decrypt(message, alphabet, shift_number))
